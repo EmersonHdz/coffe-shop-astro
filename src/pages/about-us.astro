@@ -1,9 +1,17 @@
 ---
+import { BaseWPSchema } from '@/types';
 import  Layout from '../layouts/Layout.astro';
+
+const url = 'http://coffeshopwithastro.local/wp-json/wp/v2/pages?slug=about-us';
+const response = await fetch(url);
+const json = await response.json();
+const data = BaseWPSchema.parse(json[0]);
+
+console.log(data);
 ---
  
 <Layout 
  title="about us">
-  <h1>Sobre Nosotros</h1>
-  <p>Bienvenido a nuestra tienda de café. Aquí encontrarás la mejor selección de cafés del mundo.</p>
-  <a href="/">Volver a Inicio</a>
+    <h1>{data.title.rendered}</h1>
+    
+  </Layout>
