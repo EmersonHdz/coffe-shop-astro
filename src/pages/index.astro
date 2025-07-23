@@ -1,11 +1,33 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { Image } from "astro:assets";
+import Layout from "../layouts/Layout.astro";
+import bg from "../assets/bg_home.jpg";
+import CategoryIconLabel from "@/components/ui/CategoryIconLabel.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+
+<Layout title="home" description="Welcome to our Coffee Shop" bgImage={bg.src}>
+
+  <h2 class="text-coffee-400 text-center font-black text-lg uppercase after:coffe-icon">
+    know more 
+    <span class="block text-4xl text-coffee-900">
+      About Us
+    </span>
+
+  </h2>
+  <p class="text-center text-lg text-gray-700 mt-10">
+    Welcome to our Coffee Shop! We are delighted to have you here. Enjoy browsing through our selection of fine coffees and pastries. Whether you're looking for a cozy spot to relax or a quick caffeine fix, we've got you covered. Don't forget to check out our special offers and seasonal blends!
+  </p>
+
+  <p class="text-center text-lg text-gray-700 mt-10">
+    Our team is passionate about coffee and dedicated to providing you with the best experience possible. If you have any questions or need recommendations, feel free to ask. We hope you enjoy your visit and come back soon for more delicious treats!
+  </p>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-5">
+  <CategoryIconLabel icon='icon_coffee.svg' text="coffe" />
+  <CategoryIconLabel icon='icon_dessert.svg' text="dessert" />
+  <CategoryIconLabel icon='icon_tea.svg' text="tea" />
+
+  </div>
 </Layout>

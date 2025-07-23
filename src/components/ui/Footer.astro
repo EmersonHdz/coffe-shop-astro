@@ -1,0 +1,29 @@
+---
+import FooterBox from "./FooterBox.astro";
+
+
+---
+
+<footer class="bg-coffee-900 pt-20">
+  <div class="max-w-7xl mx-auto mt-10 grid grid-cols-1 lg:grid-cols-3 gap-5">
+
+      <FooterBox heading="Ubicación">
+        <p class="text-white text-lg">Calle de la Libertad, 34</p>
+        <p class="text-white text-lg">Madrid, España</p>
+      </FooterBox>
+      <FooterBox heading="Make a Order">
+         <a href="tel:+34912345678" class="text-white text-lg">+34 912 345 678</a>
+         
+      </FooterBox>
+      <FooterBox heading="Times Opening">
+        <p class="text-white text-lg">Lunes a Viernes: 9:00 - 22:00</p>
+        <p class="text-white text-lg">Sábados: 10:00 - 23:00</p>
+        <p class="text-white text-lg">Domingos: 10:00 - 21:00</p>
+      </FooterBox>
+
+  </div>
+
+  <p class="py-10 text-center text-white text-sm">
+    All rights reserved.  &copy; {new Date().getFullYear()}
+</p>
+</footer>

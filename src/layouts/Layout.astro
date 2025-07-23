@@ -1,22 +1,37 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import "@/styles/global.css";
+import Header from "@/components/ui/Header.astro";
+import Footer from "@/components/ui/Footer.astro";
+import bg from "@/assets/bg_home.jpg";
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+
+interface Props {
+  title: string;
+  description: string;
+  bgImage: string;
+}
+
+const { title, description, bgImage } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coffee Shop: {title}</title>
+    <link rel="icon" type="image/svg+xml" href="/icon_coffee.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-coffee-100">
+   <Header 
+    description={description}
+     bgImage={bgImage}
+   />
+    <main class="bg-white p-20  max-w-7xl mx-auto lg:-mt-20 relative shadow-2xl rounded-s-md ">
+       <slot />
+    </main>
+   <Footer />
+</body>
+</html>
