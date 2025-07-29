@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { ProcessPagesSchema } from '@/types';
+
+const url = `${import.meta.env.API_URL}/pages?slug=process`;
+const response = await fetch(url);
+const json = await response.json();
+const data = ProcessPagesSchema.parse(json[0]);
+
+const sections = [
+  data.acf.section_1,
+  data.acf.section_2,
+  data.acf.section_3,
+   data.acf.section_4,
+    data.acf.section_5
+];
+---
+
+<Layout 
+  title={data.title.rendered}
+  description={data.acf.subtitle}
+  bgImage={data.featured_image.full.url}
+>
+  <div class="text-xl space-y-3 mt-10 lg:mt-0" set:html={data.content.rendered}></div>
+
+<div class="mt-12 space-y-5 sm:space-y-2 grid grid-cols-1 lg:grid-cols-2 gap-3">
+  {sections.map((section, index) => (
+    <div class="relative">
+      {/* vertinal line */}
+      {index < sections.length - 1 && (
+        <div class="absolute left-6 top-12 h-full w-px bg-gray-200"></div>
+      )}
+
+      <div class="relative flex">
+        {/* number circel */}
+        <div class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-white border-2 border-amber-400 text-amber-600 font-medium">
+          {index + 1}
+        </div>
+
+        {/* Cont minimalista */}
+        <div class="ml-6 pb-12">
+          <h3 class="text-lg font-medium text-gray-900">{section.title}</h3>
+          <p class="mt-1 text-gray-600">{section.description}</p>
+          
+          {section.image && (
+            <div class="mt-4 w-full max-w-md">
+              <img 
+                src={section.image} 
+                alt={section.title}
+                class="rounded-lg object-cover w-full h-48"
+                loading="lazy"
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+</Layout>
+

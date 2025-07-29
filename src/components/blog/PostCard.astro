@@ -1,0 +1,67 @@
+---
+import { formatDate } from '@/helpers';
+import type {Post} from '@/types';
+
+interface Props {
+  post: Post
+}
+
+const { post } = Astro.props
+---
+
+
+  <!-- Card moderna - Se repite por cada artículo -->
+  <article class="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden flex flex-col h-full">
+    
+    {/* Imagen con aspecto ratio 16:9 */}
+    {post.featured_image?.full?.url && (
+      <div class="relative pt-[56.25%] overflow-hidden">
+        <img
+          src={post.featured_image.full.url}
+          alt={post.title.rendered}
+          loading="lazy"
+          class="absolute top-0 left-0 h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+        />
+      </div>
+    )}
+
+    {/* Contenido de la card */}
+    <div class="p-6 flex-grow flex flex-col">
+      
+      {/* Encabezado con categoría */}
+      <div class="mb-3">
+        <span class="inline-block px-3 py-1 text-xs font-medium text-amber-600 bg-amber-50 rounded-full">
+          { 'Café'}
+        </span>
+      </div>
+
+      {/* Título */}
+      <h3 class="mb-3 text-xl font-bold text-gray-900 hover:text-amber-600 transition-colors">
+        <a href={`/blog/${post.slug ?? post.id}`} class="before:absolute before:inset-0">
+          {post.title.rendered}
+        </a>
+      </h3>
+
+      {/* Extracto del contenido */}
+      <div 
+        class="prose prose-sm text-gray-600 mb-4 line-clamp-3 flex-grow"
+        set:html={post.excerpt?.rendered || post.content.rendered}
+      ></div>
+
+      {/* Pie de card con metadata */}
+      <div class="mt-auto flex justify-between items-center text-sm">
+        <span class="text-gray-500 flex items-center">
+          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+          { post.date ? formatDate(post.date) : 'Fecha no disponible' }
+        </span>
+        <a href="#" class="font-medium text-amber-600 hover:text-amber-700 flex items-center">
+          Leer más
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </article>

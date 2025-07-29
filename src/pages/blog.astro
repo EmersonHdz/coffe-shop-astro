@@ -1,0 +1,53 @@
+---
+import { BaseWPSchema } from '@/types';
+import BlogPost from '@/components/blog/BlogPost.astro'
+import  Layout from '@/layouts/Layout.astro';
+
+
+//conect to the WordPress REST API to fetch the "About Us" page
+const url = `${import.meta.env.API_URL}/pages?slug=blog`;
+const response = await fetch(url);
+const json = await response.json();
+const data = BaseWPSchema.parse(json[0]);
+
+---
+ 
+<Layout 
+ title={data.title.rendered}
+ description={data.acf.subtitle}
+ bgImage={data.featured_image.full.url}>  
+<div class="space-y-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  {/* Sección de contenido principal */}
+  <section class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-coffee-200/50">
+    <div 
+      class="prose prose-coffee max-w-none p-8 md:p-10 lg:p-12 text-coffee-800"
+      set:html={data.content.rendered}
+    ></div>
+  </section>
+
+  {/* Sección de posts con título separador */}
+  <section class="space-y-8">
+    <h2 class="text-3xl font-bold text-coffee-900 text-center mb-2">
+      Más artículos sobre café
+      <span class="block w-20 h-1 bg-amber-400 mx-auto mt-4 rounded-full"></span>
+    </h2>
+    
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <BlogPost />
+    </div>
+
+    {/* CTA opcional */}
+    <div class="pt-6 text-center">
+      <a 
+        href="/blog" 
+        class="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-white font-medium hover:shadow-lg transition-all"
+      >
+        Ver todos los artículos
+        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </a>
+    </div>
+  </section>
+</div>
+</Layout>

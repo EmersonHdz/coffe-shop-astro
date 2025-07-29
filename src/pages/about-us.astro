@@ -5,7 +5,7 @@ import  Layout from '../layouts/Layout.astro';
 
 
 //conect to the WordPress REST API to fetch the "About Us" page
-const url = 'http://coffeshopwithastro.local/wp-json/wp/v2/pages?slug=about-us';
+const url = `${import.meta.env.API_URL}/pages?slug=about-us`;
 const response = await fetch(url);
 const json = await response.json();
 const data = BaseWPSchema.parse(json[0]);
@@ -17,8 +17,7 @@ const data = BaseWPSchema.parse(json[0]);
  bgImage={data.featured_image.full.url}>  
  
  <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-     
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
          <Picture 
             src={data.featured_image.full.url}
             alt={`image of ${data.title.rendered}`}
@@ -26,7 +25,7 @@ const data = BaseWPSchema.parse(json[0]);
             height={data.featured_image.full.height}
             formats={['avif', 'webp']}
          />
-      </div>
+
 
     <div class="text-xl space-y-3 mt-10 lg:mt-0 " set:html={data.content.rendered}> </div>
 
