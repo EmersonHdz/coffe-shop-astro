@@ -1,0 +1,49 @@
+---
+import { PostSchema } from "@/types";
+import Layout from "@/layouts/Layout.astro";
+import { formatDate } from "@/helpers";
+import PostCategories from "@/components/blog/PostCategories.astro";
+import PostMeta from "@/components/blog/PostMeta.astro";
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+const response = await fetch(`${import.meta.env.API_URL}/posts?slug=${slug}`);
+const json = await response.json();
+const post = PostSchema.safeParse(json[0]);
+if(!post.success) return Astro.redirect('/404');
+
+const { title, featured_image, date, category_details,  content} = post.data;
+---
+
+<Layout 
+  title={title.rendered}
+  description={title.rendered}
+  bgImage={featured_image?.full?.url}>
+
+  <article class="space-y-5 max-w-4xl mx-auto">
+  <PostMeta date={formatDate(date)} />
+
+
+           <div class="mb-3 flex flex-wrap gap-2">
+  {category_details.map(cat => (
+    <PostCategories name={cat.name} slug={cat.slug} />
+  ))}
+</div>
+
+     {/* Imagen con aspecto ratio 16:9 */}
+    {featured_image?.full?.url && (
+      <div >
+        <img
+          src={featured_image.full.url}
+          alt={title.rendered}
+          loading="lazy"
+          class="w-full"
+        />
+      </div>
+    )}
+
+    <div set:html={content.rendered} class="text-lg space-y-3 mt-5 text-coffee-900"></div>
+  </article>
+
+</Layout>

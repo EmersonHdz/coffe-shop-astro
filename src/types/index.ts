@@ -42,6 +42,11 @@ export const ProcessPagesSchema = BaseWPSchema.extend({
 });
 
 //blog area
+const CategorySchema = z.object({
+    name: z.string(),
+    slug: z.string()
+})
+const CategoriesSchema = z.array(CategorySchema);
 
 export const PostSchema = z.object({
   id: z.number(),
@@ -52,12 +57,17 @@ export const PostSchema = z.object({
     rendered: z.string(),
   }),
     date: z.string(),
+    category_details: CategoriesSchema,
   excerpt: z.object({
     rendered: z.string(),
-  }).optional(), // por si acaso
-  featured_image: z.any().optional(), // si tienes esa extensión o plugin
+  }).optional(), 
+  featured_image: z.any().optional(), 
   slug: z.string().optional()
 });
 
+
 export const PostsSchema = z.array(PostSchema);
 export type Post = z.infer<typeof PostSchema>;
+
+
+

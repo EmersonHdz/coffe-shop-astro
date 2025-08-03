@@ -1,6 +1,8 @@
 ---
-import { formatDate } from '@/helpers';
+
 import type {Post} from '@/types';
+import PostMeta from './PostMeta.astro';
+import PostCategories from './PostCategories.astro';
 
 interface Props {
   post: Post
@@ -29,15 +31,16 @@ const { post } = Astro.props
     <div class="p-6 flex-grow flex flex-col">
       
       {/* Encabezado con categoría */}
-      <div class="mb-3">
-        <span class="inline-block px-3 py-1 text-xs font-medium text-amber-600 bg-amber-50 rounded-full">
-          { 'Café'}
-        </span>
-      </div>
+   <div class="mb-3 flex flex-wrap gap-2">
+  {post.category_details.map(cat => (
+       <PostCategories name={cat.name} slug={cat.slug} />
+  ))}
+</div>
+
 
       {/* Título */}
       <h3 class="mb-3 text-xl font-bold text-gray-900 hover:text-amber-600 transition-colors">
-        <a href={`/blog/${post.slug ?? post.id}`} class="before:absolute before:inset-0">
+        <a href={`/blog/${post.slug}`} >
           {post.title.rendered}
         </a>
       </h3>
@@ -50,14 +53,12 @@ const { post } = Astro.props
 
       {/* Pie de card con metadata */}
       <div class="mt-auto flex justify-between items-center text-sm">
-        <span class="text-gray-500 flex items-center">
-          <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-          </svg>
-          { post.date ? formatDate(post.date) : 'Fecha no disponible' }
-        </span>
-        <a href="#" class="font-medium text-amber-600 hover:text-amber-700 flex items-center">
-          Leer más
+        <PostMeta date={post.date} />
+
+        
+
+        <a href={`/blog/${post.slug}`} class="font-medium text-amber-600 hover:text-amber-700 flex items-center">
+          Read more
           <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
           </svg>
