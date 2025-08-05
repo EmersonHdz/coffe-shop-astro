@@ -1,0 +1,22 @@
+---
+import { GalleryPageSchema } from '@/types';
+import  Layout from '../layouts/Layout.astro';
+import GalleryGrid from '@/components/gallery/GalleryGrid.astro';
+
+
+//conect to the WordPress REST API to fetch the "About Us" page
+const url = `${import.meta.env.API_URL}/pages?slug=gallery`;
+const response = await fetch(url);
+const json = await response.json();
+const data = GalleryPageSchema.parse(json[0]);
+---
+ 
+<Layout 
+ title={data.title.rendered}
+ description={data.acf.subtitle}
+ bgImage={data.featured_image.full.url}>  
+   
+  <GalleryGrid 
+     gallery={data.gallery}
+  />
+</Layout>

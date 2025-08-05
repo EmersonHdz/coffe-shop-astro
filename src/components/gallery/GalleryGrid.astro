@@ -1,0 +1,44 @@
+---
+import type { Gallery } from "@/types";
+import Picture from "astro/components/Picture.astro";
+
+interface Props {
+  gallery: Gallery[];
+}
+
+const { gallery }: Props = Astro.props;
+---
+
+<div  class="container mx-auto px-4 py-8">
+  <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {gallery.map((image) => (
+      <div 
+        class="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]"
+      >
+        <a href={image.full.url} data-pswp-width={image.full.width} data-pswp-height={image.full.height} target="_blank" >
+        <Picture
+          class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          src={image.large.url}
+          alt='image gallery'
+          width={image.large.width}
+          height={image.large.height}
+          formats={['avif', 'webp']}
+        />
+        </a>
+      </div>
+    ))}
+  </div>
+</div>
+
+<script>
+    import PhotoSwipeLightbox from 'photoswipe/lightbox';
+    import 'photoswipe/style.css';
+
+    const lightbox = new PhotoSwipeLightbox({
+      gallery: '#gallery',
+      children: 'a',
+      pswpModule: () => import('photoswipe'),
+    });
+
+    lightbox.init();
+</script>

@@ -1,0 +1,42 @@
+---
+import PostCard from '@/components/blog/PostCard.astro';
+import Layout from '@/layouts/Layout.astro';
+import { CategoriesSlugSchema, CategorySchema, PostsSchema } from '@/types';
+
+export async function getStaticPaths() {
+  const response = await fetch(`${import.meta.env.API_URL}/categories?_fields=slug`);
+  const json = await response.json();
+  const categories = CategoriesSlugSchema.parse(json);
+  console.log(categories);
+  return categories.map(category => ({
+    params: { slug: category.slug }
+  }));
+}
+
+const { slug } = Astro.params;
+const catUrl = `${import.meta.env.API_URL}/categories?slug=${slug}`;
+const catResponse = await fetch(catUrl);
+const catJson = await catResponse.json();
+const category = CategorySchema.parse(catJson[0]);
+
+const postsUrl = `${import.meta.env.API_URL}/posts?categories=${category.id}`;
+const postsResponse = await fetch(postsUrl);
+const postsJson = await postsResponse.json();
+console.log(postsJson);
+
+const posts = PostsSchema.parse(postsJson); 
+---
+
+
+
+
+<Layout 
+  title={category.name}
+  description={category.name}
+  bgImage={posts[0]?.featured_image?.full?.url}>
+    <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+    {posts.map(post => (
+      <PostCard post={post} />
+    ))}
+  </div>
+</Layout>

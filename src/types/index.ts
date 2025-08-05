@@ -14,6 +14,8 @@ const featuredImageSchema = z.object({
   full: imageSchema
 });
 
+
+
 const sectionSchema = z.object({
   title: z.string(),
   description: z.string(),
@@ -30,6 +32,17 @@ export const BaseWPSchema = z.object({
   })
 });
 
+// gallery area
+const gallerySchema = z.object({
+  large: imageSchema,
+  full: imageSchema,
+});
+
+export const GalleryPageSchema = BaseWPSchema.extend({
+         gallery: z.array(gallerySchema)
+})
+
+
 export const ProcessPagesSchema = BaseWPSchema.extend({
   acf: z.object({
     subtitle: z.string(),
@@ -42,11 +55,17 @@ export const ProcessPagesSchema = BaseWPSchema.extend({
 });
 
 //blog area
-const CategorySchema = z.object({
+export const CategorySchema = z.object({
+    id: z.number(),
     name: z.string(),
     slug: z.string()
 })
 const CategoriesSchema = z.array(CategorySchema);
+
+export const CategoriesSlugSchema = z.array(CategorySchema.pick({
+    slug: true
+}));
+
 
 export const PostSchema = z.object({
   id: z.number(),
@@ -68,6 +87,7 @@ export const PostSchema = z.object({
 
 export const PostsSchema = z.array(PostSchema);
 export type Post = z.infer<typeof PostSchema>;
+export type Gallery = z.infer<typeof gallerySchema>;
 
 
 
