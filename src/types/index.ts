@@ -1,4 +1,4 @@
-import { z } from 'astro:content';
+import { z } from 'zod';
 
 const imageSchema = z.object({
   url: z.string(),
