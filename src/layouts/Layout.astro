@@ -31,12 +31,14 @@ const { title, description, bgImage } = Astro.props;
    />
    
 
-
+   <slot name='before-main-content' />
     <main class="bg-white p-7 max-w-7xl mx-auto lg:-mt-20 relative shadow-2xl rounded-s-md">
       <h2 class="text-coffee-900 font-black text-center text-4xl pb-10 mt-10 uppercase after:coffe-icon">{title}</h2>
       <slot />
     </main>
+   
 
+     <slot name='after-main-content' />
    <Footer />
 
   

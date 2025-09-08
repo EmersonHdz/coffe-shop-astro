@@ -1,0 +1,37 @@
+---
+import { BaseWPSchema } from '../types';
+import { Picture } from 'astro:assets';
+import  Layout from '../layouts/Layout.astro';
+import ProductsMenu from '../components/menu/ProductsMenu.astro';
+
+
+//conect to the WordPress REST API to fetch the "About Us" page
+const url = `${import.meta.env.API_URL}/pages?slug=menu`;
+const response = await fetch(url);
+const json = await response.json();
+const data = BaseWPSchema.parse(json[0]);
+---
+ 
+<Layout 
+ title={data.title.rendered}
+ description={data.acf.subtitle}
+ bgImage={data.featured_image.full.url}>  
+ 
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+         <Picture 
+            src={data.featured_image.full.url}
+            alt={`image of ${data.title.rendered}`}
+            width={data.featured_image.full.width}
+            height={data.featured_image.full.height}
+            formats={['avif', 'webp']}
+         />
+
+
+    <div class="text-xl space-y-3 mt-10 lg:mt-0 " set:html={data.content.rendered}> </div>
+
+ </div>
+ <ProductsMenu
+   slot='after-main-content'
+ />
+</Layout>

@@ -7,3 +7,11 @@ export function formatDate(dateStr: string): string {
   day: 'numeric',
 }).format(date);
 }
+
+
+export function FormatAmount(amount: number): string { 
+  return new Intl.NumberFormat('en-GB', {
+    style: 'currency',
+    currency: 'GBP',
+  }).format(amount);
+}

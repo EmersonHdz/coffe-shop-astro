@@ -85,9 +85,27 @@ export const PostSchema = z.object({
 });
 
 
+
+//menu area
+const MenuItemSchema = BaseWPSchema.pick({
+   title: true,
+   featured_image: true
+}).extend({
+     acf: z.object({
+      description: z.string(),
+      price: z.coerce.number()
+     })
+})
+
+
+
+
+export const MenuItemsSchema = z.array(MenuItemSchema)
+
 export const PostsSchema = z.array(PostSchema);
 export type Post = z.infer<typeof PostSchema>;
 export type Gallery = z.infer<typeof gallerySchema>;
+export type FeaturedImage = z.infer<typeof featuredImageSchema>
 
 
 

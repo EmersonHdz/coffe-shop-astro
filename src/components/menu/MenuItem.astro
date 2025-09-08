@@ -1,0 +1,55 @@
+---
+
+
+
+
+import { FormatAmount } from '../../helpers';
+import Picture from 'astro/components/Picture.astro';
+import { FeaturedImage} from '../../types'
+
+interface Props {
+     title: string;
+     description: string;
+     price: number;
+     image: FeaturedImage
+}
+
+const { title, description, price, image }: Props = Astro.props;
+ 
+---
+
+
+<li class="group bg-gradient-to-br from-coffee-900 to-coffee-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 w-full p-6">
+  <div class="flex flex-col md:flex-row gap-6 md:items-center">
+    <!--  image-->
+    <div class="w-full md:w-40 lg:w-56 overflow-hidden rounded-lg shadow-md flex-shrink-0">
+      <a href={image.full.url} 
+         data-pswp-width={image.full.width} 
+         data-pswp-height={image.full.height} 
+         target="_blank"
+         class="block overflow-hidden rounded-lg">
+        <Picture
+          class="w-full h-48 md:h-40 object-cover transition-all duration-500 group-hover:scale-105"
+          src={image.large.url}
+          alt=`Image of menu: ${title}`
+          width={image.large.width}
+          height={image.large.height}
+          formats={['avif', 'webp']}
+        />
+      </a>
+    </div>
+    
+    <!-- content -->
+    <div class="flex-1 flex flex-col justify-between">
+      <div class="mb-4">
+        <h3 class="text-white font-bold text-2xl mb-2 transition-colors group-hover:text-coffee-200">{title}</h3>
+        <p class="text-coffee-300  text-small leading-relaxed">{description}</p>
+      </div>
+      
+      <div class="flex items-center justify-between mt-2">
+        <p class="text-3xl font-black text-coffee-100">{FormatAmount(price)}</p>
+   
+      </div>
+    </div>
+  </div>
+</li>
